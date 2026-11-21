@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSCC Décembre 26'</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #111518;
+            --bg-card: #181e23;
+            --bg-input: #20272e;
+            --text-primary: #f2f5f8;
+            --text-secondary: #8c9aa6;
+            --text-muted: #5e6c77;
+            --lb-orange: #ff8000;
+            --lb-green: #00e054;
+            --lb-blue: #40bcf4;
+            --border-subtle: #252e36;
+            --font-serif: 'Lora', Georgia, serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            padding-bottom: 60px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =====================================================================
+           ÉCRAN DE CONNEXION & RÈGLEMENT (AUTH SCREEN)
+           ===================================================================== */
+        #auth-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .auth-card {
+            width: 100%;
+            background-color: var(--bg-card);
+            background-image: radial-gradient(circle at 88% 12%, rgba(0, 224, 84, 0.16) 0%, rgba(24, 30, 35, 0) 65%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 30px 26px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        }
+
+        .auth-header { margin-bottom: 22px; }
+
+        .lb-dots {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .lb-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .dot-orange { background-color: var(--lb-orange); }
+        .dot-green { background-color: var(--lb-green); }
+        .dot-blue { background-color: var(--lb-blue); }
+
+        .auth-title {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .pin-input {
+            font-family: var(--font-mono) !important;
+            font-size: 1.25rem !important;
+            letter-spacing: 0.35em;
+            text-align: center;
+        }
+
+        .auth-error {
+            background: rgba(255, 77, 77, 0.12);
+            border: 1px solid rgba(255, 77, 77, 0.4);
+            color: #ff7a7a;
+            font-size: 0.85rem;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .existing-members-box {
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .existing-label {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .member-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .member-pill {
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .member-pill:hover {
+            border-color: var(--lb-green);
+            color: var(--text-primary);
+        }
+
+        /* Carte des règles sur l'écran d'accueil */
+        .rules-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 24px 26px;
+        }
+
+        .rules-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--lb-orange);
+            margin-bottom: 6px;
+        }
+
+        .rules-title {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .rules-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.45;
+        }
+
+        .rule-num {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--lb-green);
+            background: rgba(0, 224, 84, 0.1);
+            border: 1px solid rgba(0, 224, 84, 0.25);
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .rule-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* =====================================================================
+           APPLICATION PRINCIPALE
+           ===================================================================== */
+        header {
+            background-color: var(--bg-main);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand .lb-dots { margin-bottom: 0; }
+
+        .brand-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .user-badge-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logged-user-name {
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-logout:hover {
+            border-color: var(--lb-orange);
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 24px auto 0;
+            padding: 0 16px;
+        }
+
+        /* Carte Hero avec dégradé émeraude */
+        .hero-card {
+            background-color: var(--bg-card);
+            background-image: radial-gradient(circle at 88% 18%, rgba(0, 224, 84, 0.16) 0%, rgba(24, 30, 35, 0) 62%);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .hero-body { padding: 28px 24px 24px; }
+
+        .phase-kicker {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--lb-green);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-family: var(--font-serif);
+            font-size: 2.3rem;
+            font-weight: 600;
+            line-height: 1.15;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .hero-subtitle {
+            font-size: 0.98rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 26px;
+        }
+
+        .countdown-meta {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .countdown-deadline-text {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 18px;
+        }
+
+        .countdown-grid { display: flex; gap: 24px; }
+        .time-block { display: flex; flex-direction: column; }
+        .time-val {
+            font-family: var(--font-mono);
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+        .time-lbl {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+        .expired-banner {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--lb-orange);
+            padding: 8px 0;
+        }
+
+        /* Barre des 3 étapes */
+        .phase-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border-subtle);
+            background-color: rgba(15, 19, 23, 0.45);
+        }
+
+        .phase-tab {
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--border-subtle);
+            border-top: 2px solid transparent;
+            padding: 16px 18px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .phase-tab:last-child { border-right: none; }
+        .phase-tab:hover:not(.locked) { background-color: rgba(255, 255, 255, 0.02); }
+        .phase-tab.active {
+            border-top: 2px solid var(--lb-green);
+            background: linear-gradient(180deg, rgba(0, 224, 84, 0.08) 0%, rgba(24, 30, 35, 0) 100%);
+        }
+        .phase-tab.locked { opacity: 0.45; cursor: not-allowed; }
+
+        .tab-num {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .phase-tab.active .tab-num { color: var(--lb-green); font-weight: 700; }
+
+        .tab-name {
+            display: block;
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        .phase-tab.active .tab-name { color: var(--text-primary); font-weight: 600; }
+
+        /* Cartes & Formulaires */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 22px 24px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .card-counter {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"], input[type="password"], input[type="url"], .form-select {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 0.92rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, .form-select:focus { outline: none; border-color: var(--lb-green); }
+        input:disabled, .form-select:disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .btn-primary {
+            background-color: var(--lb-green);
+            color: #0b140e;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        .btn-primary:hover:not(:disabled) { opacity: 0.9; }
+        .btn-primary:active:not(:disabled) { transform: scale(0.99); }
+        .btn-primary:disabled { background-color: #252e36; color: var(--text-muted); cursor: not-allowed; }
+
+        /* Liste des membres ("Le club") */
+        .member-row { display: flex; align-items: center; gap: 14px; padding: 10px 0; }
+        .avatar-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #232b32;
+            color: var(--text-secondary);
+            font-family: var(--font-serif);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border-subtle);
+        }
+        .avatar-circle.is-me {
+            background-color: var(--lb-green);
+            color: #09140c;
+            font-weight: 700;
+            border-color: var(--lb-green);
+        }
+        .member-info { flex: 1; }
+        .member-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .member-name { font-size: 0.95rem; font-weight: 500; color: var(--text-primary); }
+        .member-name span { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+        .member-stat { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); }
+        .progress-track { width: 100%; height: 4px; background-color: #242d35; border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background-color: var(--lb-green); border-radius: 4px; transition: width 0.4s ease; }
+        .member-movies-preview { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
+
+        /* Votes */
+        .vote-group { margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--border-subtle); }
+        .vote-group:last-of-type { border-bottom: none; padding-bottom: 0; }
+        .vote-group-title { font-family: var(--font-serif); font-size: 1.1rem; margin-bottom: 10px; color: var(--text-primary); }
+        .vote-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .vote-option input[type="radio"] { accent-color: var(--lb-green); width: 16px; height: 16px; }
+        .vote-count-pill {
+            margin-left: auto;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        /* Critiques Letterboxd */
+        .movie-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .movie-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: var(--text-primary); }
+        .movie-curator { font-size: 0.82rem; color: var(--text-secondary); margin-top: 2px; }
+        .movie-avg {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--lb-green);
+            background: rgba(0, 224, 84, 0.1);
+            border: 1px solid rgba(0, 224, 84, 0.25);
+            padding: 4px 10px;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .review-row {
+            display: grid;
+            grid-template-columns: 115px 95px 1fr auto;
+            gap: 10px;
+            align-items: center;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(37, 46, 54, 0.6);
+        }
+        .review-row:last-child { border-bottom: none; }
+        .lb-link { color: var(--lb-blue); text-decoration: none; font-size: 0.88rem; font-weight: 500; }
+        .lb-link:hover { text-decoration: underline; }
+
+        .locked-box { text-align: center; padding: 36px 20px; color: var(--text-secondary); }
+        .locked-box h3 { font-family: var(--font-serif); color: var(--text-primary); font-size: 1.25rem; margin-bottom: 8px; }
+
+        #status-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background-color: var(--lb-green);
+            color: #09140c;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        @media (max-width: 600px) {
+            .hero-title { font-size: 1.9rem; }
+            .countdown-grid { gap: 18px; }
+            .time-val { font-size: 1.55rem; }
+            .phase-tab { padding: 12px 10px; }
+            .tab-name { font-size: 0.88rem; }
+            .review-row {
+                grid-template-columns: 1fr;
+                background: var(--bg-input);
+                padding: 12px;
+                border-radius: 8px;
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- =========================================================================
+     1. PAGE D'ACCÈS (CONNEXION + RÈGLEMENT DU CLUB)
+     ========================================================================= -->
+<div id="auth-screen">
+    <div class="auth-wrapper">
+        <!-- Carte de connexion -->
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="lb-dots">
+                    <span class="dot-orange"></span>
+                    <span class="dot-green"></span>
+                    <span class="dot-blue"></span>
+                </div>
+                <h1 class="auth-title">SSCC Décembre 26'</h1>
+                <p class="auth-subtitle">Entre ton prénom ou pseudonyme et un code PIN à 4 chiffres pour rejoindre ou retrouver ton profil.</p>
+            </div>
+
+            <div id="auth-error" class="auth-error"></div>
+
+            <form onsubmit="handleAuth(event)">
+                <div class="form-group">
+                    <label for="login-pseudo">Prénom ou Pseudonyme</label>
+                    <input type="text" id="login-pseudo" placeholder="Ex: Gérome ou Pilou70" maxlength="20" required autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="login-pin">Code PIN (4 chiffres)</label>
+                    <input type="password" id="login-pin" class="pin-input" placeholder="••••" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required>
+                </div>
+
+                <button type="submit" class="btn-primary" id="btn-auth-submit" style="width: 100%;">Entrer dans le club</button>
+            </form>
+
+            <div class="existing-members-box" id="existing-members-box" style="display:none;">
+                <div class="existing-label">Membres déjà inscrits (cliquer pour pré-remplir)</div>
+                <div class="member-pills" id="existing-members-pills"></div>
+            </div>
+        </div>
+
+        <!-- Carte des règles officielles -->
+        <div class="rules-card">
+            <div class="rules-kicker">CHARTE DE SÉLECTION</div>
+            <h2 class="rules-title">Les règles du club</h2>
+            <ul class="rules-list">
+                <li class="rule-item">
+                    <span class="rule-num">01</span>
+                    <span><strong>Disponibilité :</strong> Le film doit être référencé sur <strong>Letterboxd</strong> et visionnable sur <strong>Stremio</strong>.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">02</span>
+                    <span><strong>Durée :</strong> Entre <strong>1h00 minimum et 2h00 maximum</strong>.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">03</span>
+                    <span><strong>Fiction uniquement :</strong> Long-métrage de fiction ou d'animation (<strong>pas de documentaire</strong>, ni de concert ou spectacle filmé).</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">04</span>
+                    <span><strong>Sous-titres :</strong> Disponible au minimum avec des <strong>sous-titres en anglais</strong> (ou en français).</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">05</span>
+                    <span><strong>Esprit découverte :</strong> Privilégie les films peu connus ou inédits pour le groupe (évite les blockbusters déjà vus par tout le monde).</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">06</span>
+                    <span><strong>Œuvre autonome :</strong> Pas de suite directe nécessitant d'avoir vu d'autres volets au préalable.</span>
+                </li>
+                <li class="rule-item">
+                    <span class="rule-num">07</span>
+                    <span><strong>Engagement :</strong> Chaque membre s'engage à regarder les <strong>7 films retenus</strong>, les noter et publier sa review sur Letterboxd avant le <strong>31 décembre à 23h59</strong>.</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- =========================================================================
+     2. APPLICATION PRINCIPALE (MASQUÉE TANT QUE NON CONNECTÉ)
+     ========================================================================= -->
+<div id="app-screen" style="display:none;">
+    <header>
+        <div class="header-inner">
+            <div class="brand">
+                <div class="lb-dots">
+                    <span class="dot-orange"></span>
+                    <span class="dot-green"></span>
+                    <span class="dot-blue"></span>
+                </div>
+                <div class="brand-title">SSCC Décembre 26'</div>
+            </div>
+            <div class="user-badge-bar">
+                <span class="logged-user-name" id="header-username"></span>
+                <button class="btn-logout" onclick="logout()" title="Changer de profil / Déconnexion">Quitter ↪</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- CARTE PRINCIPALE (HERO + COMPTE À REBOURS + SÉLECTEUR DE PHASE) -->
+        <div class="hero-card">
+            <div class="hero-body">
+                <div class="phase-kicker" id="hero-kicker">PHASE 01 · PROPOSITIONS</div>
+                <h1 class="hero-title" id="hero-title">Trois films chacun.</h1>
+                <p class="hero-subtitle" id="hero-subtitle">Propose trois œuvres de ton choix avant la fermeture des listes.</p>
+
+                <div class="countdown-meta" id="countdown-meta">FIN DES PROPOSITIONS</div>
+                <div class="countdown-deadline-text" id="countdown-deadline">Samedi 28 Novembre À 23:59</div>
+
+                <div class="countdown-grid" id="countdown-display">
+                    <div class="time-block">
+                        <span class="time-val" id="cd-days">00</span>
+                        <span class="time-lbl">JOURS</span>
+                    </div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-hours">00</span>
+                        <span class="time-lbl">HEURES</span>
+                    </div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-mins">00</span>
+                        <span class="time-lbl">MIN</span>
+                    </div>
+                    <div class="time-block">
+                        <span class="time-val" id="cd-secs">00</span>
+                        <span class="time-lbl">SEC</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="phase-tabs">
+                <button class="phase-tab active" id="tab-btn-1" onclick="switchTab(1)">
+                    <span class="tab-num">01</span>
+                    <span class="tab-name">Propositions</span>
+                </button>
+                <button class="phase-tab" id="tab-btn-2" onclick="switchTab(2)">
+                    <span class="tab-num" id="tab-num-2">02 🔒</span>
+                    <span class="tab-name">Vote</span>
+                </button>
+                <button class="phase-tab" id="tab-btn-3" onclick="switchTab(3)">
+                    <span class="tab-num" id="tab-num-3">03 🔒</span>
+                    <span class="tab-name">Décembre</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENU PHASE 01 : PROPOSITIONS -->
+        <div id="section-1" class="section active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Mes propositions (<span class="user-name-display"></span>)</h2>
+                </div>
+                <div class="form-group">
+                    <label>Film 01</label>
+                    <input type="text" id="prop1" placeholder="Ex: Memories of Murder (2003)">
+                </div>
+                <div class="form-group">
+                    <label>Film 02</label>
+                    <input type="text" id="prop2" placeholder="Ex: Aftersun (2022)">
+                </div>
+                <div class="form-group">
+                    <label>Film 03</label>
+                    <input type="text" id="prop3" placeholder="Ex: La Haine (1995)">
+                </div>
+                <button class="btn-primary" id="btn-save-props" onclick="savePropositions()">Enregistrer mes 3 films</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Le club</h2>
+                    <span class="card-counter" id="club-props-counter">0/7</span>
+                </div>
+                <div id="club-props-list">Chargement...</div>
+            </div>
+        </div>
+
+        <!-- CONTENU PHASE 02 : VOTES -->
+        <div id="section-2" class="section">
+            <div id="step2-locked" class="card locked-box" style="display:none;">
+                <h3>Étape 02 verrouillée</h3>
+                <p>Les votes ouvriront automatiquement le <strong>29 novembre 2026 à 00:00</strong>.</p>
+            </div>
+
+            <div id="step2-unlocked">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Bulletin de vote</h2>
+                        <span class="card-counter" id="club-votes-counter">0/7</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+                        Choisis 1 film dans la sélection de chacun des autres membres.
+                    </p>
+                    <div id="voting-lists">Chargement...</div>
+                    <button class="btn-primary" id="btn-save-votes" onclick="saveVotes()">Valider mes votes</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENU PHASE 03 : DÉCEMBRE & REVIEWS -->
+        <div id="section-3" class="section">
+            <div id="step3-locked" class="card locked-box" style="display:none;">
+                <h3>Étape 03 verrouillée</h3>
+                <p>La sélection officielle et les critiques Letterboxd ouvriront le <strong>1er décembre 2026 à 00:00</strong>.</p>
+            </div>
+
+            <div id="step3-unlocked">
+                <div id="selected-movies-container">Chargement des films retenus...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="status-msg">Enregistré</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // =========================================================================
+    // 1. CONFIGURATION FIREBASE & LIMITE DU CLUB
+    // =========================================================================
+    const MAX_MEMBERS = 7;
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBkgWbDq4GxRQ9mGsNB-p8Hp8wT7kXsyw4",
+        authDomain: "sscc-decembre-26.firebaseapp.com",
+        projectId: "sscc-decembre-26",
+        storageBucket: "sscc-decembre-26.firebasestorage.app",
+        messagingSenderId: "765624674443",
+        appId: "1:765624674443:web:e93f4b57315a0fb8880c8e"
+    };
+    // =========================================================================
+
+    const END_STEP_1 = new Date("2026-11-28T23:59:59").getTime();
+    const END_STEP_2 = new Date("2026-11-30T23:59:59").getTime();
+    const END_STEP_3 = new Date("2026-12-31T23:59:59").getTime();
+
+    const PHASE_META = {
+        1: {
+            kicker: "PHASE 01 · PROPOSITIONS",
+            title: "Trois films chacun.",
+            subtitle: "Propose trois œuvres de ton choix avant la fermeture des listes.",
+            meta: "FIN DES PROPOSITIONS",
+            deadlineText: "Samedi 28 Novembre À 23:59",
+            target: END_STEP_1
+        },
+        2: {
+            kicker: "PHASE 02 · VOTE",
+            title: "Un choix par liste.",
+            subtitle: "Vote pour ton film préféré dans la sélection de chaque autre membre.",
+            meta: "FIN DES VOTES",
+            deadlineText: "Lundi 30 Novembre À 23:59",
+            target: END_STEP_2
+        },
+        3: {
+            kicker: "PHASE 03 · DÉCEMBRE",
+            title: "Sept films. Un mois.",
+            subtitle: "Regarde les films des autres, note-les et joins ta review Letterboxd.",
+            meta: "FIN DU CINÉ-CLUB",
+            deadlineText: "Jeudi 31 Décembre À 23:59",
+            target: END_STEP_3
+        }
+    };
+
+    let activeTab = 1;
+    let isStep1Over = false;
+    let isStep2Over = false;
+    let isStep3Over = false;
+    let initialTabSet = false;
+    let currentUser = localStorage.getItem("sscc_user") || null;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const docRef = doc(db, "cineclub", "sscc_decembre_26");
+
+    let appData = {
+        users: {},
+        propositions: {},
+        votes: {},
+        reviews: {}
+    };
+
+    // Écoute temps réel Firebase
+    onSnapshot(docRef, (snapshot) => {
+        if (snapshot.exists()) {
+            appData = { users: {}, propositions: {}, votes: {}, reviews: {}, ...snapshot.data() };
+        }
+        updateAuthMembersPills();
+
+        if (currentUser && appData.users[currentUser]) {
+            showAppScreen();
+            renderAll();
+        } else if (currentUser) {
+            logout();
+        }
+    });
+
+    // =========================================================================
+    // GESTION DE LA PAGE DE CONNEXION
+    // =========================================================================
+    function showAuthError(msg) {
+        const errEl = document.getElementById("auth-error");
+        errEl.textContent = msg;
+        errEl.style.display = "block";
+    }
+
+    function updateAuthMembersPills() {
+        const names = Object.keys(appData.users || {});
+        const box = document.getElementById("existing-members-box");
+        const pillsContainer = document.getElementById("existing-members-pills");
+
+        if (names.length === 0) {
+            box.style.display = "none";
+            return;
+        }
+
+        box.style.display = "block";
+        pillsContainer.innerHTML = names.map(name => 
+            `<span class="member-pill" onclick="fillPseudo('${name.replace(/'/g, "\\'")}')">${name}</span>`
+        ).join("");
+    }
+
+    window.fillPseudo = function(name) {
+        document.getElementById("login-pseudo").value = name;
+        document.getElementById("login-pin").focus();
+    };
+
+    window.handleAuth = async function(e) {
+        e.preventDefault();
+        document.getElementById("auth-error").style.display = "none";
+
+        const rawPseudo = document.getElementById("login-pseudo").value.trim();
+        const pin = document.getElementById("login-pin").value.trim();
+
+        if (!rawPseudo) return showAuthError("Entre un prénom ou un pseudonyme.");
+        if (!/^\d{4}$/.test(pin)) return showAuthError("Le code PIN doit contenir exactement 4 chiffres.");
+
+        const existingKey = Object.keys(appData.users).find(
+            k => k.toLowerCase() === rawPseudo.toLowerCase()
+        );
+
+        if (existingKey) {
+            if (appData.users[existingKey] !== pin) {
+                return showAuthError(`Code PIN incorrect pour le profil « ${existingKey} ».`);
+            }
+            currentUser = existingKey;
+        } else {
+            if (Object.keys(appData.users).length >= MAX_MEMBERS) {
+                return showAuthError(`Le club est complet (${MAX_MEMBERS}/${MAX_MEMBERS} membres inscrits).`);
+            }
+            appData.users[rawPseudo] = pin;
+            currentUser = rawPseudo;
+            await setDoc(docRef, appData);
+        }
+
+        localStorage.setItem("sscc_user", currentUser);
+        document.getElementById("login-pin").value = "";
+        showAppScreen();
+        renderAll();
+        showToast(`Bienvenue, ${currentUser} !`);
+    };
+
+    function showAppScreen() {
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("app-screen").style.display = "block";
+        document.getElementById("header-username").textContent = currentUser;
+    }
+
+    window.logout = function() {
+        currentUser = null;
+        localStorage.removeItem("sscc_user");
+        document.getElementById("app-screen").style.display = "none";
+        document.getElementById("auth-screen").style.display = "flex";
+        document.getElementById("login-pin").value = "";
+        document.getElementById("auth-error").style.display = "none";
+    };
+
+    // =========================================================================
+    // HORLOGE, VERROUILLAGE DES ÉTAPES ET COMPTE À REBOURS
+    // =========================================================================
+    function updateClockAndLocks() {
+        const now = new Date().getTime();
+        const prev1 = isStep1Over;
+        const prev2 = isStep2Over;
+
+        isStep1Over = now > END_STEP_1;
+        isStep2Over = now > END_STEP_2;
+        isStep3Over = now > END_STEP_3;
+
+        const tab2 = document.getElementById("tab-btn-2");
+        const tab3 = document.getElementById("tab-btn-3");
+
+        if (isStep1Over) {
+            tab2.classList.remove("locked");
+            document.getElementById("tab-num-2").textContent = "02";
+            document.getElementById("step2-locked").style.display = "none";
+            document.getElementById("step2-unlocked").style.display = "block";
+        } else {
+            tab2.classList.add("locked");
+            document.getElementById("tab-num-2").textContent = "02 🔒";
+            document.getElementById("step2-locked").style.display = "block";
+            document.getElementById("step2-unlocked").style.display = "none";
+        }
+
+        if (isStep2Over) {
+            tab3.classList.remove("locked");
+            document.getElementById("tab-num-3").textContent = "03";
+            document.getElementById("step3-locked").style.display = "none";
+            document.getElementById("step3-unlocked").style.display = "block";
+        } else {
+            tab3.classList.add("locked");
+            document.getElementById("tab-num-3").textContent = "03 🔒";
+            document.getElementById("step3-locked").style.display = "block";
+            document.getElementById("step3-unlocked").style.display = "none";
+        }
+
+        if (!initialTabSet) {
+            initialTabSet = true;
+            if (isStep2Over) switchTab(3, true);
+            else if (isStep1Over) switchTab(2, true);
+            else switchTab(1, true);
+        }
+
+        const meta = PHASE_META[activeTab];
+        const dist = meta.target - now;
+        const cdDisplay = document.getElementById("countdown-display");
+
+        if (dist <= 0) {
+            cdDisplay.innerHTML = `<div class="expired-banner">Phase terminée</div>`;
+        } else {
+            if (!document.getElementById("cd-days")) {
+                cdDisplay.innerHTML = `
+                    <div class="time-block"><span class="time-val" id="cd-days">00</span><span class="time-lbl">JOURS</span></div>
+                    <div class="time-block"><span class="time-val" id="cd-hours">00</span><span class="time-lbl">HEURES</span></div>
+                    <div class="time-block"><span class="time-val" id="cd-mins">00</span><span class="time-lbl">MIN</span></div>
+                    <div class="time-block"><span class="time-val" id="cd-secs">00</span><span class="time-lbl">SEC</span></div>
+                `;
+            }
+            const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+            const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((dist % (1000 * 60)) / 1000);
+
+            document.getElementById("cd-days").textContent = String(d).padStart(2, '0');
+            document.getElementById("cd-hours").textContent = String(h).padStart(2, '0');
+            document.getElementById("cd-mins").textContent = String(m).padStart(2, '0');
+            document.getElementById("cd-secs").textContent = String(s).padStart(2, '0');
+        }
+
+        if ((prev1 !== isStep1Over || prev2 !== isStep2Over) && currentUser) renderAll();
+    }
+
+    window.switchTab = function(stepNum, force = false) {
+        if (!force) {
+            if (stepNum === 2 && !isStep1Over) {
+                showToast("🔒 Les votes ouvriront le 29 novembre à 00:00");
+                return;
+            }
+            if (stepNum === 3 && !isStep2Over) {
+                showToast("🔒 L'espace Décembre ouvrira le 1er décembre à 00:00");
+                return;
+            }
+        }
+
+        activeTab = stepNum;
+        const meta = PHASE_META[stepNum];
+
+        document.getElementById("hero-kicker").textContent = meta.kicker;
+        document.getElementById("hero-title").textContent = meta.title;
+        document.getElementById("hero-subtitle").textContent = meta.subtitle;
+        document.getElementById("countdown-meta").textContent = meta.meta;
+        document.getElementById("countdown-deadline").textContent = meta.deadlineText;
+
+        [1, 2, 3].forEach(n => {
+            document.getElementById(`tab-btn-${n}`).classList.toggle("active", n === stepNum);
+            document.getElementById(`section-${n}`).classList.toggle("active", n === stepNum);
+        });
+
+        updateClockAndLocks();
+    };
+
+    updateClockAndLocks();
+    setInterval(updateClockAndLocks, 1000);
+
+    // =========================================================================
+    // ACTIONS UTILISATEUR & RENDU DES DONNÉES
+    // =========================================================================
+    function showToast(msg) {
+        const el = document.getElementById("status-msg");
+        el.textContent = msg;
+        el.style.display = "block";
+        setTimeout(() => { el.style.display = "none"; }, 2500);
+    }
+
+    window.savePropositions = async function() {
+        if (isStep1Over || !currentUser) return;
+        const f1 = document.getElementById("prop1").value.trim();
+        const f2 = document.getElementById("prop2").value.trim();
+        const f3 = document.getElementById("prop3").value.trim();
+
+        const filled = [f1, f2, f3].filter(Boolean);
+        if (filled.length === 0) return alert("Entre au moins un film !");
+
+        appData.propositions[currentUser] = [f1, f2, f3];
+        await setDoc(docRef, appData);
+        showToast("Propositions enregistrées");
+    };
+
+    window.saveVotes = async function() {
+        if (!isStep1Over || isStep2Over || !currentUser) return;
+        if (!appData.votes[currentUser]) appData.votes[currentUser] = {};
+
+        const members = Object.keys(appData.users);
+        members.forEach(owner => {
+            if (owner !== currentUser) {
+                const selected = document.querySelector(`input[name="vote_${owner}"]:checked`);
+                if (selected) appData.votes[currentUser][owner] = parseInt(selected.value);
+            }
+        });
+
+        await setDoc(docRef, appData);
+        showToast("Votes enregistrés");
+    };
+
+    window.saveReview = async function(movieId) {
+        if (!isStep2Over || isStep3Over || !currentUser) return;
+        const rating = document.getElementById(`rate_${movieId}_${currentUser}`).value;
+        const url = document.getElementById(`url_${movieId}_${currentUser}`).value.trim();
+
+        if (!appData.reviews[movieId]) appData.reviews[movieId] = {};
+        appData.reviews[movieId][currentUser] = { rating, url };
+
+        await setDoc(docRef, appData);
+        showToast("Critique Letterboxd enregistrée");
+    };
+
+    function getWinningMovies() {
+        const winners = [];
+        const members = Object.keys(appData.users);
+
+        members.forEach(owner => {
+            const movies = (appData.propositions[owner] || []).filter(Boolean);
+            if (movies.length === 0) return;
+
+            const counts = [0, 0, 0];
+            Object.values(appData.votes).forEach(userVotes => {
+                if (userVotes[owner] !== undefined) counts[userVotes[owner]]++;
+            });
+
+            let maxVotes = -1;
+            let winIdx = 0;
+            movies.forEach((_, idx) => {
+                if (counts[idx] > maxVotes) { maxVotes = counts[idx]; winIdx = idx; }
+            });
+
+            winners.push({
+                id: `${owner}_${winIdx}`,
+                owner: owner,
+                title: movies[winIdx],
+                counts: counts
+            });
+        });
+        return winners;
+    }
+
+    window.renderAll = function() {
+        if (!currentUser) return;
+        const members = Object.keys(appData.users);
+
+        document.querySelectorAll(".user-name-display").forEach(el => el.textContent = currentUser);
+
+        // 1. Propositions & Carte "Le club"
+        const myProps = appData.propositions[currentUser] || ["", "", ""];
+        document.getElementById("prop1").value = myProps[0] || "";
+        document.getElementById("prop2").value = myProps[1] || "";
+        document.getElementById("prop3").value = myProps[2] || "";
+
+        document.getElementById("prop1").disabled = isStep1Over;
+        document.getElementById("prop2").disabled = isStep1Over;
+        document.getElementById("prop3").disabled = isStep1Over;
+        document.getElementById("btn-save-props").disabled = isStep1Over;
+
+        let completedMembers = 0;
+        const clubHtml = members.map(p => {
+            const list = (appData.propositions[p] || []).filter(Boolean);
+            const count = list.length;
+            if (count === 3) completedMembers++;
+            const pct = Math.round((count / 3) * 100);
+            const isMe = p === currentUser;
+
+            return `
+                <div class="member-row">
+                    <div class="avatar-circle ${isMe ? 'is-me' : ''}">${p.charAt(0).toUpperCase()}</div>
+                    <div class="member-info">
+                        <div class="member-top">
+                            <div class="member-name">${p} ${isMe ? '<span>(toi)</span>' : ''}</div>
+                            <div class="member-stat">${count}/3</div>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: ${pct}%"></div>
+                        </div>
+                        ${count > 0 ? `<div class="member-movies-preview">${list.join(" · ")}</div>` : ''}
+                    </div>
+                </div>
+            `;
+        }).join("");
+
+        document.getElementById("club-props-counter").textContent = `${completedMembers}/${MAX_MEMBERS}`;
+        document.getElementById("club-props-list").innerHTML = clubHtml;
+
+        // 2. Votes
+        const winners = getWinningMovies();
+        const votersCount = members.filter(p => appData.votes[p] && Object.keys(appData.votes[p]).length > 0).length;
+        document.getElementById("club-votes-counter").textContent = `${votersCount}/${members.length}`;
+        document.getElementById("btn-save-votes").disabled = isStep2Over;
+
+        const voteContainer = document.getElementById("voting-lists");
+        const otherMembers = members.filter(m => m !== currentUser);
+
+        if (otherMembers.length === 0) {
+            voteContainer.innerHTML = `<p style="color:var(--text-secondary);">En attente de l'inscription des autres membres.</p>`;
+        } else {
+            voteContainer.innerHTML = otherMembers.map(owner => {
+                const movies = (appData.propositions[owner] || []).filter(Boolean);
+                if (movies.length === 0) {
+                    return `<div class="vote-group"><div class="vote-group-title">Sélection de ${owner}</div><p style="color:var(--text-muted); font-size:0.88rem;">Aucun film proposé.</p></div>`;
+                }
+
+                const winData = winners.find(w => w.owner === owner);
+                const myChoice = appData.votes[currentUser]?.[owner];
+
+                const optionsHtml = movies.map((m, idx) => `
+                    <label class="vote-option">
+                        <input type="radio" name="vote_${owner}" value="${idx}" ${myChoice === idx ? "checked" : ""} ${isStep2Over ? "disabled" : ""}>
+                        <span>${m}</span>
+                        <span class="vote-count-pill">${winData ? winData.counts[idx] : 0}</span>
+                    </label>
+                `).join("");
+
+                return `<div class="vote-group"><div class="vote-group-title">Sélection de ${owner}</div>${optionsHtml}</div>`;
+            }).join("");
+        }
+
+        // 3. Critiques Letterboxd
+        const reviewsContainer = document.getElementById("selected-movies-container");
+        if (winners.length === 0) {
+            reviewsContainer.innerHTML = `<div class="card"><p style="color:var(--text-secondary);">Aucun film n'a encore été sélectionné.</p></div>`;
+            return;
+        }
+
+        reviewsContainer.innerHTML = winners.map(movie => {
+            const movieReviews = appData.reviews[movie.id] || {};
+            let sum = 0, count = 0;
+            Object.values(movieReviews).forEach(r => {
+                if (r.rating) { sum += parseFloat(r.rating); count++; }
+            });
+            const avg = count > 0 ? `★ ${(sum / count).toFixed(2)}` : "— ★";
+
+            const rowsHtml = members.map(p => {
+                const rev = movieReviews[p] || { rating: "", url: "" };
+                const isMe = p === currentUser;
+
+                if (isMe && !isStep3Over) {
+                    return `
+                        <div class="review-row">
+                            <span style="font-weight:500;">${p} <span style="color:var(--text-muted); font-weight:400;">(toi)</span></span>
+                            <select class="form-select" id="rate_${movie.id}_${p}">
+                                <option value="">Note</option>
+                                ${["0.5","1","1.5","2","2.5","3","3.5","4","4.5","5"].map(n => 
+                                    `<option value="${n}" ${rev.rating === n ? "selected" : ""}>${n} ★</option>`
+                                ).join("")}
+                            </select>
+                            <input type="url" id="url_${movie.id}_${p}" placeholder="Lien Letterboxd..." value="${rev.url}">
+                            <button class="btn-primary" style="margin:0; padding:8px 14px;" onclick="saveReview('${movie.id}')">OK</button>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="review-row">
+                            <span style="color:var(--text-secondary);">${p}${isMe ? ' (toi)' : ''}</span>
+                            <span style="font-family:var(--font-mono); color:var(--lb-green); font-size:0.88rem;">${rev.rating ? rev.rating + " ★" : "—"}</span>
+                            <span>${rev.url ? `<a href="${rev.url}" target="_blank" class="lb-link">Lire la review Letterboxd ↗</a>` : "<span style='color:var(--text-muted); font-size:0.85rem;'>En attente</span>"}</span>
+                            <span></span>
+                        </div>
+                    `;
+                }
+            }).join("");
+
+            return `
+                <div class="card">
+                    <div class="movie-card-header">
+                        <div>
+                            <div class="movie-title">${movie.title}</div>
+                            <div class="movie-curator">Choix de ${movie.owner}</div>
+                        </div>
+                        <div class="movie-avg">${avg}</div>
+                    </div>
+                    ${rowsHtml}
+                </div>
+            `;
+        }).join("");
+    };
+</script>
+
+</body>
+</html>
