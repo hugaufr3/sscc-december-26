@@ -1,1 +1,1 @@
-# scc-december-26
+# sscc-december-26
